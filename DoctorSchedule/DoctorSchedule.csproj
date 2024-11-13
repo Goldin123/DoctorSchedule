@@ -21,4 +21,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DoctorSchedule.Application\DoctorSchedule.Application.csproj" />
+    <ProjectReference Include="..\DoctorSchedule.Domain\DoctorSchedule.Domain.csproj" />
+    <ProjectReference Include="..\DoctorSchedule.Infrastructure\DoctorSchedule.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
