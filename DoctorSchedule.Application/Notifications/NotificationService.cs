@@ -1,5 +1,5 @@
 ﻿using DoctorSchedule.Application.Messaging.Interface;
-using DoctorSchedule.Domain.Aggregates;
+using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.Models;
 using System;
 using System.Collections.Generic;

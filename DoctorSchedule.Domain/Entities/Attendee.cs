@@ -15,5 +15,7 @@ namespace DoctorSchedule.Domain.Entities
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsAttending { get; set; }
+        public Guid EventId { get; set; }
+        public Event Event { get; set; }
     }
 }
