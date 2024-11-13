@@ -1,7 +1,36 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\DoctorSchedule\\DoctorSchedule\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{01BC4EA0-4898-40A6-B9DB-9E1D09393EDB}|DoctorSchedule.Tests\\DoctorSchedule.Tests.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.tests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{01BC4EA0-4898-40A6-B9DB-9E1D09393EDB}|DoctorSchedule.Tests\\DoctorSchedule.Tests.csproj|solutionrelative:doctorschedule.tests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{113E6A10-8C09-4727-9523-B126C4ACBF57}|DoctorSchedule.Infrastructure\\DoctorSchedule.Infrastructure.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{113E6A10-8C09-4727-9523-B126C4ACBF57}|DoctorSchedule.Infrastructure\\DoctorSchedule.Infrastructure.csproj|solutionrelative:doctorschedule.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2CC7991-87BB-4291-83DC-705B148F8C21}|DoctorSchedule.Application\\DoctorSchedule.Application.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.application\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2CC7991-87BB-4291-83DC-705B148F8C21}|DoctorSchedule.Application\\DoctorSchedule.Application.csproj|solutionrelative:doctorschedule.application\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.domain\\valueobjects\\eventtime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|solutionrelative:doctorschedule.domain\\valueobjects\\eventtime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.domain\\entities\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|solutionrelative:doctorschedule.domain\\entities\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|c:\\workspace\\doctorschedule\\doctorschedule\\doctorschedule.domain\\entities\\attendee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}|DoctorSchedule.Domain\\DoctorSchedule.Domain.csproj|solutionrelative:doctorschedule.domain\\entities\\attendee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +55,97 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJMBAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-11-13T08:31:01.4Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UnitTest1.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Tests\\UnitTest1.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Tests\\UnitTest1.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Tests\\UnitTest1.cs",
+              "RelativeToolTip": "DoctorSchedule.Tests\\UnitTest1.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:29:45.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Infrastructure\\Class1.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Infrastructure\\Class1.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Infrastructure\\Class1.cs",
+              "RelativeToolTip": "DoctorSchedule.Infrastructure\\Class1.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:27:57.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Application\\Class1.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Application\\Class1.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Application\\Class1.cs",
+              "RelativeToolTip": "DoctorSchedule.Application\\Class1.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:26:02.036Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EventTime.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\ValueObjects\\EventTime.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Domain\\ValueObjects\\EventTime.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\ValueObjects\\EventTime.cs",
+              "RelativeToolTip": "DoctorSchedule.Domain\\ValueObjects\\EventTime.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:24:44.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Event.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\Entities\\Event.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Domain\\Entities\\Event.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\Entities\\Event.cs",
+              "RelativeToolTip": "DoctorSchedule.Domain\\Entities\\Event.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAAAAkAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:21:41.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Attendee.cs",
+              "DocumentMoniker": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\Entities\\Attendee.cs",
+              "RelativeDocumentMoniker": "DoctorSchedule.Domain\\Entities\\Attendee.cs",
+              "ToolTip": "C:\\workspace\\DoctorSchedule\\DoctorSchedule\\DoctorSchedule.Domain\\Entities\\Attendee.cs",
+              "RelativeToolTip": "DoctorSchedule.Domain\\Entities\\Attendee.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAAAAkAAABDAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:21:01.192Z",
+              "EditorCaption": ""
             }
           ]
         }
