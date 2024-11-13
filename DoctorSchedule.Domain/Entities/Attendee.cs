@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorSchedule.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,6 @@ namespace DoctorSchedule.Domain.Entities
         public bool IsAttending { get; set; }
         public Guid EventId { get; set; }
         public Event Event { get; set; }
+        public ResponseStatus ResponseStatus { get; set; } = ResponseStatus.Pending;
     }
 }

@@ -211,5 +211,33 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
             // Assert
             Assert.Fail("Create or modify test");
         }
+
+        [Test]
+        public async Task CanCallAcceptEventAsync()
+        {
+            // Arrange
+            var eventId = new Guid("91764361-0ea9-46bf-9a75-feabdd876b35");
+            var attendeeId = new Guid("440f7663-abac-4450-a2ce-bfe4e55b5ba4");
+
+            // Act
+            await _testClass.AcceptEventAsync(eventId, attendeeId);
+
+            // Assert
+            Assert.Fail("Create or modify test");
+        }
+
+        [Test]
+        public async Task CanCallDeclineEventAsync()
+        {
+            // Arrange
+            var eventId = new Guid("33af41e5-ee97-4d77-9120-0d518bd1e4bb");
+            var attendeeId = new Guid("ce2f7155-619b-4699-85f2-5f2eb69ba4f8");
+
+            // Act
+            await _testClass.DeclineEventAsync(eventId, attendeeId);
+
+            // Assert
+            Assert.Fail("Create or modify test");
+        }
     }
 }
