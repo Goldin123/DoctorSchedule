@@ -14,7 +14,6 @@ This is a .net 8 application that employes a CQRS approach using the DDD pattern
 ### Installing
 
 * Clone the repository.
-* Run the FileManager DB.sql file located in the SQL folder of the Goldin.File.Upload.Database module to ensure that all database dependencies are created.
 * Set DoctorSchedule as the startup project.
 * Build the application.
 
