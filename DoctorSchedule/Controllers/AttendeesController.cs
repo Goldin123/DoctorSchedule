@@ -71,5 +71,19 @@ namespace DoctorSchedule.Controllers
             await _eventRepository.RemoveAttendeeAsync(eventId, attendeeId);
             return NoContent();
         }
+
+        [HttpPost("{attendeeId}/accept")]
+        public async Task<IActionResult> AcceptEvent(Guid eventId, Guid attendeeId)
+        {
+            await _eventRepository.AcceptEventAsync(eventId, attendeeId);
+            return Ok(new { Message = "Event accepted successfully." });
+        }
+
+        [HttpPost("{attendeeId}/decline")]
+        public async Task<IActionResult> DeclineEvent(Guid eventId, Guid attendeeId)
+        {
+            await _eventRepository.DeclineEventAsync(eventId, attendeeId);
+            return Ok(new { Message = "Event declined successfully." });
+        }
     }
 }

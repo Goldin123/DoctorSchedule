@@ -17,5 +17,7 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task AddAttendeeAsync(Guid eventId, Attendee attendee);
         Task UpdateAttendeeAsync(Guid eventId, Attendee attendee);
         Task RemoveAttendeeAsync(Guid eventId, Guid attendeeId);
+        Task AcceptEventAsync(Guid eventId, Guid attendeeId);
+        Task DeclineEventAsync(Guid eventId, Guid attendeeId);
     }
 }
