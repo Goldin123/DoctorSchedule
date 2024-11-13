@@ -15,13 +15,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{59C7EF71-91D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C41ECDB-62A9-492B-9466-5D0A04644B74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorSchedule.Domain", "DoctorSchedule.Domain\DoctorSchedule.Domain.csproj", "{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorSchedule.Domain", "DoctorSchedule.Domain\DoctorSchedule.Domain.csproj", "{76F4CDE1-89DB-4D9F-A3E4-B5516D59847D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorSchedule.Application", "DoctorSchedule.Application\DoctorSchedule.Application.csproj", "{D2CC7991-87BB-4291-83DC-705B148F8C21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorSchedule.Application", "DoctorSchedule.Application\DoctorSchedule.Application.csproj", "{D2CC7991-87BB-4291-83DC-705B148F8C21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorSchedule.Infrastructure", "DoctorSchedule.Infrastructure\DoctorSchedule.Infrastructure.csproj", "{113E6A10-8C09-4727-9523-B126C4ACBF57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorSchedule.Infrastructure", "DoctorSchedule.Infrastructure\DoctorSchedule.Infrastructure.csproj", "{113E6A10-8C09-4727-9523-B126C4ACBF57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorSchedule.Tests", "DoctorSchedule.Tests\DoctorSchedule.Tests.csproj", "{01BC4EA0-4898-40A6-B9DB-9E1D09393EDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorSchedule.Tests", "DoctorSchedule.Tests\DoctorSchedule.Tests.csproj", "{01BC4EA0-4898-40A6-B9DB-9E1D09393EDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{317B1D31-39E6-42CF-AC8E-1531D77ECEB7}"
+	ProjectSection(SolutionItems) = preProject
+		CreateTables.sql = CreateTables.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
