@@ -30,3 +30,4 @@ C:\workspace\DoctorSchedule\DoctorSchedule\DoctorSchedule\obj\Debug\net8.0\refin
 C:\workspace\DoctorSchedule\DoctorSchedule\DoctorSchedule\obj\Debug\net8.0\DoctorSchedule.pdb
 C:\workspace\DoctorSchedule\DoctorSchedule\DoctorSchedule\obj\Debug\net8.0\DoctorSchedule.genruntimeconfig.cache
 C:\workspace\DoctorSchedule\DoctorSchedule\DoctorSchedule\obj\Debug\net8.0\ref\DoctorSchedule.dll
+C:\workspace\DoctorSchedule\DoctorSchedule\DoctorSchedule\obj\Debug\net8.0\DoctorSchedule.sourcelink.json
