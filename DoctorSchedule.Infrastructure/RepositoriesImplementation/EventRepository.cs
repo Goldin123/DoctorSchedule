@@ -2,6 +2,7 @@
 using DoctorSchedule.Domain.RepositoriesInterface;
 using DoctorSchedule.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,55 +14,163 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
     public class EventRepository : IEventRepository
     {
         private readonly AppDbContext _context;
-
-        public EventRepository(AppDbContext context)
+        private readonly ILogger<EventRepository> _logger;
+        public EventRepository(AppDbContext context, ILogger<EventRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<Event> GetEventByIdAsync(Guid eventId)
         {
-            return await _context.Events
-                .Include(e => e.Attendees)
-                .FirstOrDefaultAsync(e => e.Id == eventId);
+            try
+            {
+                return await _context.Events
+                    .Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
         }
 
         public async Task<List<Event>> GetEventsAsync(DateTime? startDate, DateTime? endDate)
         {
-            var query = _context.Events.Include(e => e.Attendees).AsQueryable();
-
-            if (startDate.HasValue)
+            try
             {
-                query = query.Where(e => e.StartTime >= startDate.Value);
-            }
+                var query = _context.Events.Include(e => e.Attendees).AsQueryable();
 
-            if (endDate.HasValue)
+                if (startDate.HasValue)
+                {
+                    query = query.Where(e => e.StartTime >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    query = query.Where(e => e.EndTime <= endDate.Value);
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
             {
-                query = query.Where(e => e.EndTime <= endDate.Value);
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
             }
-
-            return await query.ToListAsync();
         }
 
         public async Task CreateEventAsync(Event calendarEvent)
         {
-            await _context.Events.AddAsync(calendarEvent);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Events.AddAsync(calendarEvent);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
         }
 
         public async Task UpdateEventAsync(Event calendarEvent)
         {
-            _context.Events.Update(calendarEvent);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Events.Update(calendarEvent);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
         }
 
         public async Task DeleteEventAsync(Guid eventId)
         {
-            var calendarEvent = await _context.Events.FindAsync(eventId);
-            if (calendarEvent != null)
+            try
             {
-                _context.Events.Remove(calendarEvent);
+                var calendarEvent = await _context.Events.FindAsync(eventId);
+                if (calendarEvent != null)
+                {
+                    _context.Events.Remove(calendarEvent);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
+        }
+
+        public async Task AddAttendeeAsync(Guid eventId, Attendee attendee)
+        {
+            try
+            {
+                var calendarEvent = await _context.Events.Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+
+                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
+
+                calendarEvent.Attendees.Add(attendee);
                 await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
+        }
+
+        public async Task UpdateAttendeeAsync(Guid eventId, Attendee updatedAttendee)
+        {
+            try
+            {
+                var calendarEvent = await _context.Events.Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+
+                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
+
+                var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == updatedAttendee.Id);
+                if (attendee == null) throw new KeyNotFoundException("Attendee not found.");
+
+                attendee.Name = updatedAttendee.Name;
+                attendee.Email = updatedAttendee.Email;
+                attendee.IsAttending = updatedAttendee.IsAttending;
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
+        }
+
+        public async Task RemoveAttendeeAsync(Guid eventId, Guid attendeeId)
+        {
+            try
+            {
+                var calendarEvent = await _context.Events.Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+
+                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
+
+                var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
+                if (attendee != null)
+                {
+                    calendarEvent.Attendees.Remove(attendee);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
             }
         }
     }

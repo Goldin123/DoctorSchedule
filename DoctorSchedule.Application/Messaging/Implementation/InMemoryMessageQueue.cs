@@ -20,8 +20,16 @@ namespace DoctorSchedule.Application.Messaging.Implementation
 
         public void Send(NotificationMessage message)
         {
-            // Log the message instead of actually sending it
-            _logger.LogInformation($"Message sent to {message.Email}: {message.Message}");
+            try
+            {
+                // Log the message instead of actually sending it
+                _logger.LogInformation($"Message sent to {message.Email}: {message.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
         }
     }
 }
