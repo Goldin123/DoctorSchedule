@@ -1,4 +1,4 @@
-﻿using DoctorSchedule.Domain.Aggregates;
+﻿using DoctorSchedule.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,4 +16,3 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task DeleteEventAsync(Guid eventId);
     }
 }
-
