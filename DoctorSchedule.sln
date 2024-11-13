@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorSchedule", "DoctorSchedule\DoctorSchedule.csproj", "{4228A4BF-E73D-44F6-8722-7C1E296FCE19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{BC50C61D-3833-4FB9-9D26-96827608724F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{52DA374A-7D74-4729-8CA5-6ECB7947058C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{53FD7282-EC93-4918-94ED-2D4919BCEF6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{59C7EF71-91DF-41D2-B8E8-6A1A0A101E31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C41ECDB-62A9-492B-9466-5D0A04644B74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4228A4BF-E73D-44F6-8722-7C1E296FCE19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4228A4BF-E73D-44F6-8722-7C1E296FCE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4228A4BF-E73D-44F6-8722-7C1E296FCE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4228A4BF-E73D-44F6-8722-7C1E296FCE19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4228A4BF-E73D-44F6-8722-7C1E296FCE19} = {59C7EF71-91DF-41D2-B8E8-6A1A0A101E31}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F00BFDA-F41F-4D42-964E-890A6E8C43CF}
+	EndGlobalSection
+EndGlobal

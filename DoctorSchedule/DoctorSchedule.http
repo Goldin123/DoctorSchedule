@@ -1,0 +1,6 @@
+@DoctorSchedule_HostAddress = http://localhost:5007
+
+GET {{DoctorSchedule_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
