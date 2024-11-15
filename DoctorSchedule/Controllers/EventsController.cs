@@ -27,6 +27,19 @@ namespace DoctorSchedule.Controllers
             }
             return Ok(calendarEvent);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetEvents([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                return BadRequest("Both startDate and endDate are required.");
+            }
+
+            var events = await _eventRepository.GetEventsAsync(startDate, endDate);
+            return Ok(events);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {

@@ -1,6 +1,6 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [DoctorSchedule]    Script Date: 2024/11/13 19:32:57 ******/
+/****** Object:  Database [DoctorSchedule]    Script Date: 2024/11/15 08:46:30 ******/
 CREATE DATABASE [DoctorSchedule]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -84,12 +84,12 @@ ALTER DATABASE [DoctorSchedule] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CL
 GO
 USE [DoctorSchedule]
 GO
-/****** Object:  Table [dbo].[Attendee]    Script Date: 2024/11/13 19:32:58 ******/
+/****** Object:  Table [dbo].[Attendees]    Script Date: 2024/11/15 08:46:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Attendee](
+CREATE TABLE [dbo].[Attendees](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](100) NOT NULL,
 	[Email] [nvarchar](255) NOT NULL,
@@ -102,12 +102,12 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Event]    Script Date: 2024/11/13 19:32:58 ******/
+/****** Object:  Table [dbo].[Events]    Script Date: 2024/11/15 08:46:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Event](
+CREATE TABLE [dbo].[Events](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Title] [nvarchar](200) NOT NULL,
 	[Description] [nvarchar](max) NULL,
@@ -119,10 +119,12 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[Attendee] ADD  DEFAULT ((0)) FOR [ResponseStatus]
+ALTER TABLE [dbo].[Attendees] ADD  DEFAULT ((0)) FOR [ResponseStatus]
 GO
-ALTER TABLE [dbo].[Attendee]  WITH CHECK ADD FOREIGN KEY([EventId])
-REFERENCES [dbo].[Event] ([Id])
+ALTER TABLE [dbo].[Events] ADD  CONSTRAINT [DF_Event_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Attendees]  WITH CHECK ADD FOREIGN KEY([EventId])
+REFERENCES [dbo].[Events] ([Id])
 GO
 USE [master]
 GO
