@@ -20,7 +20,7 @@ namespace DoctorSchedule.Controllers
             _eventRepository = eventRepository;
         }
 
-        [HttpPost]
+        [HttpPost("add-attendee")]
         public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] AddAttendeeRequest request)
         {
             var attendee = new Attendee
@@ -35,7 +35,7 @@ namespace DoctorSchedule.Controllers
             return CreatedAtAction(nameof(GetAttendee), new { eventId, attendeeId = attendee.Id }, attendee);
         }
 
-        [HttpGet("{attendeeId}")]
+        [HttpGet("get-attendee-by-id/{attendeeId}")]
         public async Task<IActionResult> GetAttendee(Guid eventId, Guid attendeeId)
         {
             var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
@@ -53,7 +53,7 @@ namespace DoctorSchedule.Controllers
             return Ok(attendee);
         }
 
-        [HttpPut("{attendeeId}")]
+        [HttpPut("update-attendee-details/{attendeeId}")]
         public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeRequest request)
         {
             var updatedAttendee = new Attendee
@@ -68,7 +68,7 @@ namespace DoctorSchedule.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{attendeeId}")]
+        [HttpDelete("delete-attendee/{attendeeId}")]
         public async Task<IActionResult> RemoveAttendee(Guid eventId, Guid attendeeId)
         {
             await _eventRepository.RemoveAttendeeAsync(eventId, attendeeId);

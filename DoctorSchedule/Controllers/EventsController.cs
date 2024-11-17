@@ -20,7 +20,7 @@ namespace DoctorSchedule.Controllers
             _eventRepository = eventRepository;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-event-by-id/{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
             var calendarEvent = await _eventRepository.GetEventByIdAsync(id);
@@ -31,7 +31,7 @@ namespace DoctorSchedule.Controllers
             return Ok(calendarEvent);
         }
 
-        [HttpGet]
+        [HttpGet("get-events-by-dates")]
         public async Task<IActionResult> GetEvents([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             if (!startDate.HasValue || !endDate.HasValue)
@@ -43,7 +43,7 @@ namespace DoctorSchedule.Controllers
             return Ok(events);
         }
 
-        [HttpPost]
+        [HttpPost("create-attendee-event")]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
             var calendarEvent = new Event
