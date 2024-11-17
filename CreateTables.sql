@@ -1,6 +1,6 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [DoctorSchedule]    Script Date: 2024/11/15 08:46:30 ******/
+/****** Object:  Database [DoctorSchedule]    Script Date: 2024/11/15 09:27:58 ******/
 CREATE DATABASE [DoctorSchedule]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -84,15 +84,15 @@ ALTER DATABASE [DoctorSchedule] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CL
 GO
 USE [DoctorSchedule]
 GO
-/****** Object:  Table [dbo].[Attendees]    Script Date: 2024/11/15 08:46:31 ******/
+/****** Object:  Table [dbo].[Attendees]    Script Date: 2024/11/15 09:27:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Attendees](
 	[Id] [uniqueidentifier] NOT NULL,
-	[Name] [nvarchar](100) NOT NULL,
-	[Email] [nvarchar](255) NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Email] [varchar](255) NOT NULL,
 	[IsAttending] [bit] NOT NULL,
 	[EventId] [uniqueidentifier] NOT NULL,
 	[ResponseStatus] [int] NOT NULL,
@@ -102,15 +102,15 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Events]    Script Date: 2024/11/15 08:46:31 ******/
+/****** Object:  Table [dbo].[Events]    Script Date: 2024/11/15 09:27:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Events](
 	[Id] [uniqueidentifier] NOT NULL,
-	[Title] [nvarchar](200) NOT NULL,
-	[Description] [nvarchar](max) NULL,
+	[Title] [varchar](200) NOT NULL,
+	[Description] [varchar](max) NULL,
 	[StartTime] [datetime2](7) NOT NULL,
 	[EndTime] [datetime2](7) NOT NULL,
 PRIMARY KEY CLUSTERED 
@@ -118,6 +118,23 @@ PRIMARY KEY CLUSTERED
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 2024/11/15 09:27:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](100) NULL,
+	[LastName] [varchar](100) NULL,
+	[Username] [varchar](100) NULL,
+	[Password] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Attendees] ADD  DEFAULT ((0)) FOR [ResponseStatus]
 GO

@@ -1,4 +1,5 @@
-﻿using DoctorSchedule.Domain.Entities;
+﻿using DoctorSchedule.Authorization;
+using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
 using DoctorSchedule.Domain.Requests;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,8 @@ namespace DoctorSchedule.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class AttendeesController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;

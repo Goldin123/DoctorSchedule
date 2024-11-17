@@ -24,6 +24,7 @@ namespace DoctorSchedule.Application.Messaging.Implementation
             {
                 // Log the message instead of actually sending it
                 _logger.LogInformation($"Message sent to {message.Email}: {message.Message}");
+
             }
             catch (Exception ex)
             {
