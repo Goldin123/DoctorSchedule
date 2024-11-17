@@ -138,15 +138,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
                 Email = "TestValue1740547232",
                 IsAttending = true,
                 EventId = new Guid("dffda24e-8a68-410a-b1ed-0b13cfe81a43"),
-                Event = new Event
-                {
-                    Id = new Guid("b2232f64-3a5b-4bd6-951d-f67fcea2fb2a"),
-                    Title = "TestValue1374488865",
-                    Description = "TestValue1399434863",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow,
-                    Attendees = new List<Attendee>()
-                }
+               
             };
 
             // Act
@@ -174,15 +166,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
                 Email = "TestValue1975387628",
                 IsAttending = false,
                 EventId = new Guid("07c7e859-d54c-45d2-9d51-de71aa69e404"),
-                Event = new Event
-                {
-                    Id = new Guid("25fdb513-ef06-4554-ae3b-ace92a734f8e"),
-                    Title = "TestValue592638129",
-                    Description = "TestValue1052824",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow,
-                    Attendees = new List<Attendee>()
-                }
+               
             };
 
             // Act
