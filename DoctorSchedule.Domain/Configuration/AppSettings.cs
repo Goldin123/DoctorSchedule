@@ -9,6 +9,7 @@ namespace DoctorSchedule.Domain.Configuration
     public class AppSettings
     {
         public string? Secret { get; set; }
+        public int? MinutesExpiry{ get; set; }
 
     }
 }

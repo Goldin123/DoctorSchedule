@@ -57,6 +57,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("DoctorSchedule.Infrastructure")));
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddScoped<IEventRepository,EventRepository>();
 builder.Services.AddScoped<IMessageQueue, InMemoryMessageQueue>();
