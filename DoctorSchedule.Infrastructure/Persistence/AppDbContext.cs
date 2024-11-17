@@ -13,6 +13,7 @@ namespace DoctorSchedule.Infrastructure.Persistence
     {
         public DbSet<Event> Events { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

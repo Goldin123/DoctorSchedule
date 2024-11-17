@@ -1,4 +1,5 @@
 ﻿using DoctorSchedule.Application.Commands;
+using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,8 @@ namespace DoctorSchedule.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class EventsController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
@@ -27,6 +30,19 @@ namespace DoctorSchedule.Controllers
             }
             return Ok(calendarEvent);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetEvents([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                return BadRequest("Both startDate and endDate are required.");
+            }
+
+            var events = await _eventRepository.GetEventsAsync(startDate, endDate);
+            return Ok(events);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
