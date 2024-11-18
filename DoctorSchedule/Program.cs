@@ -10,6 +10,7 @@ using DoctorSchedule.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddDataProtection();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

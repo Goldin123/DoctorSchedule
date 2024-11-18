@@ -1,4 +1,5 @@
 ﻿using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task RemoveAttendeeAsync(Guid eventId, Guid attendeeId);
         Task AcceptEventAsync(Guid eventId, Guid attendeeId);
         Task DeclineEventAsync(Guid eventId, Guid attendeeId);
+        Task<EventResponse> GetEventResponseByIdAsync(Guid eventId);
     }
 }

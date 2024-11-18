@@ -1,6 +1,8 @@
-﻿using DoctorSchedule.Domain.Entities;
+﻿using AutoMapper;
+using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.Enums;
 using DoctorSchedule.Domain.RepositoriesInterface;
+using DoctorSchedule.Domain.Responses;
 using DoctorSchedule.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,10 +18,12 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
     {
         private readonly AppDbContext _context;
         private readonly ILogger<EventRepository> _logger;
-        public EventRepository(AppDbContext context, ILogger<EventRepository> logger)
+        private readonly IMapper _mapper;
+        public EventRepository(AppDbContext context, ILogger<EventRepository> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Event> GetEventByIdAsync(Guid eventId)
@@ -29,6 +33,23 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 return await _context.Events
                     .Include(e => e.Attendees)
                     .FirstOrDefaultAsync(e => e.Id == eventId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
+        }
+
+        public async Task<EventResponse> GetEventResponseByIdAsync(Guid eventId)
+        {
+            try
+            {
+                var currentEvent = await _context.Events
+                    .Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+
+                return _mapper.Map<EventResponse>(currentEvent);
             }
             catch (Exception ex)
             {
@@ -66,8 +87,12 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
         {
             try
             {
-                await _context.Events.AddAsync(calendarEvent);
-                await _context.SaveChangesAsync();
+                var existingEvent = await _context.Events.FirstOrDefaultAsync(x => x.Title == calendarEvent.Title);
+                if (existingEvent == null)
+                {
+                    await _context.Events.AddAsync(calendarEvent);
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -117,8 +142,16 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
 
                 if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
 
-                calendarEvent.Attendees.Add(attendee);
-                await _context.SaveChangesAsync();
+                var existingAttendee = await _context.Attendees.FirstOrDefaultAsync(x => attendee.EventId == eventId && x.Email == attendee.Email);
+
+                if (existingAttendee == null)
+                {
+                    attendee.Id = Guid.NewGuid();
+                    calendarEvent.Attendees.Add(attendee);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                    await UpdateAttendeeAsync(eventId, attendee);
             }
             catch (Exception ex)
             {

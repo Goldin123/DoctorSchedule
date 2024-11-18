@@ -23,7 +23,7 @@ namespace DoctorSchedule.Controllers
         [HttpGet("get-event-by-id/{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
-            var calendarEvent = await _eventRepository.GetEventByIdAsync(id);
+            var calendarEvent = await _eventRepository.GetEventResponseByIdAsync(id);
             if (calendarEvent == null)
             {
                 return NotFound();
