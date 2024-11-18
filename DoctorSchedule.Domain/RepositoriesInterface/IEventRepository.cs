@@ -16,10 +16,10 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task UpdateEventAsync(Event calendarEvent);
         Task DeleteEventAsync(Guid eventId);
         Task AddAttendeeAsync(Guid eventId, Attendee attendee);
-        Task UpdateAttendeeAsync(Guid eventId, Attendee attendee);
-        Task RemoveAttendeeAsync(Guid eventId, Guid attendeeId);
-        Task AcceptEventAsync(Guid eventId, Guid attendeeId);
-        Task DeclineEventAsync(Guid eventId, Guid attendeeId);
+        Task<bool> UpdateAttendeeAsync(Guid eventId, Attendee attendee);
+        Task<bool> RemoveAttendeeAsync(Guid eventId, Guid attendeeId);
+        Task<bool> AcceptEventAsync(Guid eventId, Guid attendeeId);
+        Task<bool> DeclineEventAsync(Guid eventId, Guid attendeeId);
         Task<EventResponse> GetEventResponseByIdAsync(Guid eventId);
     }
 }

@@ -71,14 +71,16 @@ namespace DoctorSchedule.Controllers
                 IsAttending = request.IsAttending
             };
 
-            await _eventRepository.UpdateAttendeeAsync(eventId, updatedAttendee);
+            if(await _eventRepository.UpdateAttendeeAsync(eventId, updatedAttendee))
+                return Ok("Successfully updated.");
             return NoContent();
         }
 
         [HttpDelete("delete-attendee/{attendeeId}")]
         public async Task<IActionResult> RemoveAttendee(Guid eventId, Guid attendeeId)
         {
-            await _eventRepository.RemoveAttendeeAsync(eventId, attendeeId);
+            if(await _eventRepository.RemoveAttendeeAsync(eventId, attendeeId))
+                return Ok("Successfully removed.");
             return NoContent();
         }
 
@@ -86,41 +88,49 @@ namespace DoctorSchedule.Controllers
         public async Task<IActionResult> AcceptEvent(Guid eventId, Guid attendeeId)
         {
             var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
-            if (calendarEvent == null)
-                return NotFound("Event not found.");
+
+            if (calendarEvent == null) return NotFound("Event not found.");
 
             var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
-            
-            if (attendee == null) return NotFound("Attendee not found.");
-           
-            await _eventRepository.AcceptEventAsync(eventId, attendeeId);
-            await _messageQueue.SendAsync(new NotificationMessage
-            {
-                Email = attendee.Email,
-                Message = $"Event {calendarEvent.Title} for {attendee.Name} accepted please note it is scheduled on {calendarEvent.StartTime} ending on {calendarEvent.EndTime}."
-            });
 
-            return Ok(new { Message = $"Event for {attendee.Name} accepted successfully and notification sent." });
+            if (attendee == null) return NotFound("Attendee not found.");
+
+            if (await _eventRepository.AcceptEventAsync(eventId, attendeeId))
+            {
+
+                await _messageQueue.SendAsync(new NotificationMessage
+                {
+                    Email = attendee.Email,
+                    Message = $"Event {calendarEvent.Title} for {attendee.Name} accepted please note it is scheduled on {calendarEvent.StartTime} ending on {calendarEvent.EndTime}."
+                });
+
+                return Ok(new { Message = $"Event for {attendee.Name} accepted successfully and notification sent." });
+            }
+            return NoContent();
         }
 
         [HttpPost("{attendeeId}/decline")]
         public async Task<IActionResult> DeclineEvent(Guid eventId, Guid attendeeId)
         {
             var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
-            if (calendarEvent == null)
-                return NotFound("Event not found.");
+           
+            if (calendarEvent == null) return NotFound("Event not found.");
 
             var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
 
             if (attendee == null) return NotFound("Attendee not found.");
 
-            await _eventRepository.DeclineEventAsync(eventId, attendeeId);
-            await _messageQueue.SendAsync(new NotificationMessage
+            if (await _eventRepository.DeclineEventAsync(eventId, attendeeId))
             {
-                Email = attendee.Email,
-                Message = $"Event {calendarEvent.Title} for {attendee.Name} is declined."
-            });
-            return Ok(new { Message = $"Event for {attendee.Name} declined successfully and notification sent." });
+
+                await _messageQueue.SendAsync(new NotificationMessage
+                {
+                    Email = attendee.Email,
+                    Message = $"Event {calendarEvent.Title} for {attendee.Name} is declined."
+                });
+                return Ok(new { Message = $"Event for {attendee.Name} declined successfully and notification sent." });
+            }
+            return NoContent();
         }
     }
 }

@@ -19,11 +19,21 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
         private readonly AppDbContext _context;
         private readonly ILogger<EventRepository> _logger;
         private readonly IMapper _mapper;
+
+        public AppDbContext Context { get; }
+        public ILogger<EventRepository> Logger { get; }
+
         public EventRepository(AppDbContext context, ILogger<EventRepository> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
+        }
+
+        public EventRepository(AppDbContext context, ILogger<EventRepository> logger)
+        {
+            Context = context;
+            Logger = logger;
         }
 
         public async Task<Event> GetEventByIdAsync(Guid eventId)
@@ -161,7 +171,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task UpdateAttendeeAsync(Guid eventId, Attendee updatedAttendee)
+        public async Task<bool> UpdateAttendeeAsync(Guid eventId, Attendee updatedAttendee)
         {
             try
             {
@@ -178,6 +188,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 attendee.IsAttending = updatedAttendee.IsAttending;
 
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -186,7 +197,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task RemoveAttendeeAsync(Guid eventId, Guid attendeeId)
+        public async Task<bool> RemoveAttendeeAsync(Guid eventId, Guid attendeeId)
         {
             try
             {
@@ -201,6 +212,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                     calendarEvent.Attendees.Remove(attendee);
                     await _context.SaveChangesAsync();
                 }
+                return true;
             }
             catch (Exception ex)
             {
@@ -209,7 +221,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task AcceptEventAsync(Guid eventId, Guid attendeeId)
+        public async Task<bool> AcceptEventAsync(Guid eventId, Guid attendeeId)
         {
             try
             {
@@ -224,6 +236,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
 
                 attendee.ResponseStatus = ResponseStatus.Accepted;
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -232,7 +245,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task DeclineEventAsync(Guid eventId, Guid attendeeId)
+        public async Task<bool> DeclineEventAsync(Guid eventId, Guid attendeeId)
         {
             try
             {
@@ -248,7 +261,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 attendee.ResponseStatus = ResponseStatus.Declined;
                 attendee.IsAttending = false;
                 await _context.SaveChangesAsync();
-
+                return true;
             }
             catch (Exception ex)
             {
