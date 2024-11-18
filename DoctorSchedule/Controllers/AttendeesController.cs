@@ -1,7 +1,9 @@
-﻿using DoctorSchedule.Authorization;
+﻿using AutoMapper;
+using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
 using DoctorSchedule.Domain.Requests;
+using DoctorSchedule.Domain.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +16,11 @@ namespace DoctorSchedule.Controllers
     public class AttendeesController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
-
-        public AttendeesController(IEventRepository eventRepository)
+        private readonly IMapper _mapper;
+        public AttendeesController(IEventRepository eventRepository,IMapper mapper)
         {
             _eventRepository = eventRepository;
+            _mapper = mapper;
         }
 
         [HttpPost("add-attendee")]
@@ -44,7 +47,7 @@ namespace DoctorSchedule.Controllers
                 return NotFound("Event not found.");
             }
 
-            var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
+            var attendee = _mapper.Map<AttendeeResponse>(calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId));
             if (attendee == null)
             {
                 return NotFound("Attendee not found.");

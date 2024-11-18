@@ -147,7 +147,8 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 if (existingAttendee == null)
                 {
                     attendee.Id = Guid.NewGuid();
-                    calendarEvent.Attendees.Add(attendee);
+                    attendee.EventId = eventId;
+                    await _context.Attendees.AddAsync(attendee);
                     await _context.SaveChangesAsync();
                 }
                 else
@@ -245,6 +246,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 if (attendee == null) throw new KeyNotFoundException("Attendee not found.");
 
                 attendee.ResponseStatus = ResponseStatus.Declined;
+                attendee.IsAttending = false;
                 await _context.SaveChangesAsync();
 
             }
