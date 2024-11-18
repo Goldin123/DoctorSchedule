@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
+using DoctorSchedule.Application.CommandHandlers.Implementation;
+using DoctorSchedule.Application.CommandHandlers.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,9 @@ builder.Services.AddScoped<IMessageQueue, InMemoryMessageQueue>();
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICreateAttendeeCommandHandler, CreateAttendeeCommandHandler>();
+builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
+builder.Services.AddScoped<IUpdateAttendeeCommadHandler, UpdateAttendeeCommadHandler>();
 
 builder.Services.AddDataProtection();
 

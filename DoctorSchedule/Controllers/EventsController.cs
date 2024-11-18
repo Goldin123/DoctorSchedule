@@ -1,4 +1,5 @@
-﻿using DoctorSchedule.Application.Commands;
+﻿using DoctorSchedule.Application.CommandHandlers.Interface;
+using DoctorSchedule.Application.Commands;
 using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
@@ -14,10 +15,12 @@ namespace DoctorSchedule.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
+        private readonly ICreateEventCommandHandler _eventCommandHandler;
 
-        public EventsController(IEventRepository eventRepository)
+        public EventsController(IEventRepository eventRepository, ICreateEventCommandHandler eventCommandHandler)
         {
             _eventRepository = eventRepository;
+            _eventCommandHandler = eventCommandHandler;
         }
 
         [HttpGet("get-event-by-id/{id}")]
@@ -46,15 +49,7 @@ namespace DoctorSchedule.Controllers
         [HttpPost("create-attendee-event")]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
-            var calendarEvent = new Event
-            {
-                Id = Guid.NewGuid(),
-                Title = command.Title,
-                Description = command.Description,
-                StartTime = command.StartTime ?? DateTime.UtcNow.AddDays(2),
-                EndTime = command.EndTime ?? DateTime.UtcNow.AddDays(2).AddHours(1),
-                Attendees = command.Attendees
-            };
+            var calendarEvent = await _eventCommandHandler.Handle(command);
             await _eventRepository.CreateEventAsync(calendarEvent);
             return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);
         }
