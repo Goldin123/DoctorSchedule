@@ -13,7 +13,7 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
     {
         public UpdateAttendeeCommadHandler() { }
 
-        public async Task<Attendee> Handle(Guid attendeeId, CreateAttendeeCommand command)
+        public async Task<Attendee> Handle(Guid eventId, Guid attendeeId, CreateAttendeeCommand command)
         {
             try
             {

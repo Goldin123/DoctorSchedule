@@ -12,7 +12,7 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
     public class CreateAttendeeCommandHandler : ICreateAttendeeCommandHandler
     {
         public CreateAttendeeCommandHandler() { }
-        public async Task<Attendee> Handle(CreateAttendeeCommand command)
+        public async Task<Attendee> Handle(Guid eventId, CreateAttendeeCommand command)
         {
             try
             {
@@ -21,7 +21,8 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                     Id = Guid.NewGuid(),
                     Name = command.Name,
                     Email = command.Email,
-                    IsAttending = command.IsAttending ?? false
+                    IsAttending = command.IsAttending ?? false,
+                    EventId = eventId
                 };
             }
             catch (Exception ex)

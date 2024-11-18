@@ -48,7 +48,7 @@ namespace DoctorSchedule.Controllers
 
         [HttpPost("create-attendee-event")]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
-        {
+            {
             var calendarEvent = await _eventCommandHandler.Handle(command);
             await _eventRepository.CreateEventAsync(calendarEvent);
             return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);

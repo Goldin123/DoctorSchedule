@@ -35,7 +35,7 @@ namespace DoctorSchedule.Controllers
         [HttpPost("add-attendee")]
         public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] CreateAttendeeCommand command)
         {
-            var attendee = await _createAttendeeCommandHandler.Handle(command);
+            var attendee = await _createAttendeeCommandHandler.Handle(eventId, command);
 
             await _eventRepository.AddAttendeeAsync(eventId, attendee);
 
@@ -63,7 +63,7 @@ namespace DoctorSchedule.Controllers
         [HttpPut("update-attendee-details/{attendeeId}")]
         public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeCommad commad)
         {
-            var updatedAttendee = await _updateAttendeeCommadHandler.Handle(attendeeId, commad);
+            var updatedAttendee = await _updateAttendeeCommadHandler.Handle(eventId, attendeeId, commad);
 
             if (await _eventRepository.UpdateAttendeeAsync(eventId, updatedAttendee))
                 return Ok("Successfully updated.");

@@ -10,6 +10,6 @@ namespace DoctorSchedule.Application.CommandHandlers.Interface
 {
     public interface ICreateAttendeeCommandHandler
     {
-        Task<Attendee> Handle(CreateAttendeeCommand command);
+        Task<Attendee> Handle(Guid eventId,CreateAttendeeCommand command);
     }
 }

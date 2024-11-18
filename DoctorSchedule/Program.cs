@@ -13,6 +13,8 @@ using Microsoft.OpenApi.Models;
 using AutoMapper;
 using DoctorSchedule.Application.CommandHandlers.Implementation;
 using DoctorSchedule.Application.CommandHandlers.Interface;
+using DoctorSchedule.Application.Security.Implementation;
+using DoctorSchedule.Application.Security.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +73,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICreateAttendeeCommandHandler, CreateAttendeeCommandHandler>();
 builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
 builder.Services.AddScoped<IUpdateAttendeeCommadHandler, UpdateAttendeeCommadHandler>();
+builder.Services.AddScoped<IApplicationDataProtector, ApplicationDataProtector>();
 
 builder.Services.AddDataProtection();
 

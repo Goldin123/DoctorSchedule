@@ -1,4 +1,5 @@
 ﻿using DoctorSchedule.Application.Queries;
+using DoctorSchedule.Application.Security.Interface;
 using DoctorSchedule.Application.Services.Interface;
 using DoctorSchedule.Domain.Notifications;
 using Microsoft.AspNetCore.Http;
@@ -10,11 +11,13 @@ namespace DoctorSchedule.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
+        private readonly IApplicationDataProtector _applicationDataProtector;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IApplicationDataProtector applicationDataProtector)
         {
             _userService = userService;
+            _applicationDataProtector = applicationDataProtector;
         }
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(LoginUserQuery model)

@@ -23,7 +23,7 @@ namespace DoctorSchedule.Application.Commands
         public DateTime? StartTime { get; set; }
         [Required(ErrorMessage = "End time is required.")]
         [DataType(DataType.DateTime)]
-        [Compare(nameof(StartTime), ErrorMessage = "End time must be later than start time.")]
+        [TimeComparison("StartTime", "EndTime", ErrorMessage = "End time must be later than start time.")]
         public DateTime? EndTime { get; set; }
         public List<Attendee> Attendees { get; set; }
     }
