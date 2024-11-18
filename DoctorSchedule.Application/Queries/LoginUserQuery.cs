@@ -9,10 +9,12 @@ namespace DoctorSchedule.Application.Queries
 {
     public class LoginUserQuery
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required.")]
+        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
         public string? Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
+        [StringLength(150, ErrorMessage = "Password cannot exceed 150 characters.")]
         public string? Password { get; set; }
     }
 }

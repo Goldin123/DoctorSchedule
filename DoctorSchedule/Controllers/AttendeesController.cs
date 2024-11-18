@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using DoctorSchedule.Application.Commands;
 using DoctorSchedule.Application.Messaging.Interface;
 using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.Models;
 using DoctorSchedule.Domain.RepositoriesInterface;
-using DoctorSchedule.Domain.Requests;
 using DoctorSchedule.Domain.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,14 +28,14 @@ namespace DoctorSchedule.Controllers
         }
 
         [HttpPost("add-attendee")]
-        public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] AddAttendeeRequest request)
+        public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] CreateAttendeeCommand request)
         {
             var attendee = new Attendee
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Email = request.Email,
-                IsAttending = request.IsAttending
+                IsAttending = request.IsAttending ?? false
             };
 
             await _eventRepository.AddAttendeeAsync(eventId, attendee);
@@ -61,14 +61,14 @@ namespace DoctorSchedule.Controllers
         }
 
         [HttpPut("update-attendee-details/{attendeeId}")]
-        public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeRequest request)
+        public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeCommad request)
         {
             var updatedAttendee = new Attendee
             {
                 Id = attendeeId,
                 Name = request.Name,
                 Email = request.Email,
-                IsAttending = request.IsAttending
+                IsAttending = request.IsAttending ?? false
             };
 
             if(await _eventRepository.UpdateAttendeeAsync(eventId, updatedAttendee))

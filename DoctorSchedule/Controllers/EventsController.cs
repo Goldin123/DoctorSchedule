@@ -51,8 +51,8 @@ namespace DoctorSchedule.Controllers
                 Id = Guid.NewGuid(),
                 Title = command.Title,
                 Description = command.Description,
-                StartTime = command.StartTime,
-                EndTime = command.EndTime,
+                StartTime = command.StartTime ?? DateTime.UtcNow.AddDays(2),
+                EndTime = command.EndTime ?? DateTime.UtcNow.AddDays(2).AddHours(1),
                 Attendees = command.Attendees
             };
             await _eventRepository.CreateEventAsync(calendarEvent);
