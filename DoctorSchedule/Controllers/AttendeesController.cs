@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using DoctorSchedule.Application.Messaging.Interface;
 using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.Models;
 using DoctorSchedule.Domain.RepositoriesInterface;
 using DoctorSchedule.Domain.Requests;
 using DoctorSchedule.Domain.Responses;
@@ -17,10 +19,12 @@ namespace DoctorSchedule.Controllers
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
-        public AttendeesController(IEventRepository eventRepository,IMapper mapper)
+        private readonly IMessageQueue _messageQueue;
+        public AttendeesController(IEventRepository eventRepository,IMapper mapper, IMessageQueue messageQueue)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
+            _messageQueue = messageQueue;   
         }
 
         [HttpPost("add-attendee")]
@@ -81,15 +85,42 @@ namespace DoctorSchedule.Controllers
         [HttpPost("{attendeeId}/accept")]
         public async Task<IActionResult> AcceptEvent(Guid eventId, Guid attendeeId)
         {
+            var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
+            if (calendarEvent == null)
+                return NotFound("Event not found.");
+
+            var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
+            
+            if (attendee == null) return NotFound("Attendee not found.");
+           
             await _eventRepository.AcceptEventAsync(eventId, attendeeId);
-            return Ok(new { Message = "Event accepted successfully." });
+            await _messageQueue.SendAsync(new NotificationMessage
+            {
+                Email = attendee.Email,
+                Message = $"Event {calendarEvent.Title} for {attendee.Name} accepted please note it is scheduled on {calendarEvent.StartTime} ending on {calendarEvent.EndTime}."
+            });
+
+            return Ok(new { Message = $"Event for {attendee.Name} accepted successfully and notification sent." });
         }
 
         [HttpPost("{attendeeId}/decline")]
         public async Task<IActionResult> DeclineEvent(Guid eventId, Guid attendeeId)
         {
+            var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
+            if (calendarEvent == null)
+                return NotFound("Event not found.");
+
+            var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
+
+            if (attendee == null) return NotFound("Attendee not found.");
+
             await _eventRepository.DeclineEventAsync(eventId, attendeeId);
-            return Ok(new { Message = "Event declined successfully." });
+            await _messageQueue.SendAsync(new NotificationMessage
+            {
+                Email = attendee.Email,
+                Message = $"Event {calendarEvent.Title} for {attendee.Name} is declined."
+            });
+            return Ok(new { Message = $"Event for {attendee.Name} declined successfully and notification sent." });
         }
     }
 }

@@ -9,6 +9,6 @@ namespace DoctorSchedule.Application.Messaging.Interface
 {
     public interface IMessageQueue
     {
-        void Send(NotificationMessage message);
+        Task SendAsync(NotificationMessage message);
     }
 }

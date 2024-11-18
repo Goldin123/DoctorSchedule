@@ -12,24 +12,30 @@ namespace DoctorSchedule.Application.Notifications
     public class NotificationService
     {
         private readonly IMessageQueue _messageQueue;
-
         public NotificationService(IMessageQueue messageQueue)
         {
             _messageQueue = messageQueue;
         }
 
-        public void NotifyAttendees(Event calendarEvent)
+        public async Task NotifyAttendeesAsync(Event calendarEvent)
         {
-            foreach (var attendee in calendarEvent.Attendees)
+            try
             {
-                if (attendee.IsAttending)
+                foreach (var attendee in calendarEvent.Attendees)
                 {
-                    _messageQueue.Send(new NotificationMessage
+                    if (attendee.IsAttending)
                     {
-                        Email = attendee.Email,
-                        Message = $"Event {calendarEvent.Title} scheduled on {calendarEvent.StartTime}"
-                    });
+                        await _messageQueue.SendAsync(new NotificationMessage
+                        {
+                            Email = attendee.Email,
+                            Message = $"Event {calendarEvent.Title} scheduled on {calendarEvent.StartTime}"
+                        });
+                    }
                 }
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception($"{DateTime.Now}  - internal server error");
             }
         }
     }

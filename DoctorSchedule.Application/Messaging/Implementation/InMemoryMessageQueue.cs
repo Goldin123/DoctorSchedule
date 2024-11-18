@@ -18,12 +18,12 @@ namespace DoctorSchedule.Application.Messaging.Implementation
             _logger = logger;
         }
 
-        public void Send(NotificationMessage message)
+        public async Task SendAsync(NotificationMessage message)
         {
             try
             {
                 // Log the message instead of actually sending it
-                _logger.LogInformation($"Message sent to {message.Email}: {message.Message}");
+                _logger.LogWarning($"Message sent to {message.Email}: {message.Message}");
 
             }
             catch (Exception ex)
