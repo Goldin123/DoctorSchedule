@@ -151,8 +151,8 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                     await _context.Attendees.AddAsync(attendee);
                     await _context.SaveChangesAsync();
                 }
-                else
-                    await UpdateAttendeeAsync(eventId, attendee);
+                //else
+                //    await UpdateAttendeeAsync(eventId, attendee);
             }
             catch (Exception ex)
             {
