@@ -71,7 +71,8 @@ namespace DoctorSchedule.Controllers
         {
             if (await _removeAttendeeCommandHandler.HandleAsync(eventId, attendeeId))
                 return Ok("Attendee successfully removed.");
-            return NoContent();
+            else
+                return BadRequest();
         }
 
         [HttpPost("{attendeeId}/accept")]

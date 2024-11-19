@@ -83,6 +83,7 @@ builder.Services.AddScoped<IDeclineEventCommandHandler, DeclineEventCommandHandl
 builder.Services.AddScoped<IGetEventByIdQueryHandler, GetEventByIdQueryHandler>();
 builder.Services.AddScoped<IGetEventsBetweenDatesQueryHandler, GetEventsBetweenDatesQueryHandler>();
 builder.Services.AddScoped<IUpdateEventCommandHandler, UpdateEventCommandHandler>();
+builder.Services.AddScoped<IRemoveEventCommandHandler, RemoveEventCommandHandler>();
 
 builder.Services.AddDataProtection();
 

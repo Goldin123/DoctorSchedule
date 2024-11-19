@@ -21,13 +21,15 @@ namespace DoctorSchedule.Controllers
         private readonly IGetEventByIdQueryHandler _getEventByIdQueryHandler;
         private readonly IGetEventsBetweenDatesQueryHandler _getEventsBetweenDatesQueryHandler;
         private readonly IUpdateEventCommandHandler _updateEventCommandHandler;
+        private readonly IRemoveEventCommandHandler _removeEventCommandHandler;
 
-        public EventsController(ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler, IGetEventsBetweenDatesQueryHandler getEventsBetweenDatesQueryHandler, IUpdateEventCommandHandler updateEventCommandHandler)
+        public EventsController(ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler, IGetEventsBetweenDatesQueryHandler getEventsBetweenDatesQueryHandler, IUpdateEventCommandHandler updateEventCommandHandler, IRemoveEventCommandHandler removeEventCommandHandler)
         {
             _eventCommandHandler = eventCommandHandler;
             _getEventByIdQueryHandler = getEventByIdQueryHandler;
             _getEventsBetweenDatesQueryHandler = getEventsBetweenDatesQueryHandler;
             _updateEventCommandHandler = updateEventCommandHandler;
+            _removeEventCommandHandler = removeEventCommandHandler;
         }
 
         [HttpPost("create-attendee-event")]
@@ -46,6 +48,15 @@ namespace DoctorSchedule.Controllers
         {
             if(await _updateEventCommandHandler.HandleAsync(eventId, command))
                 return Ok("Event successfully updated.");
+            else
+                return BadRequest();
+        }
+
+        [HttpDelete("delete-event/{eventId}")]
+        public async Task<IActionResult> RemoveAttendee(Guid eventId)
+        {
+            if (await _removeEventCommandHandler.HandleAsync(eventId))
+                return Ok("Event successfully removed.");
             else
                 return BadRequest();
         }

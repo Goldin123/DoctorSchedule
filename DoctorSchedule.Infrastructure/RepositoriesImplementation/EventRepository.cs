@@ -140,7 +140,8 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
         {
             try
             {
-                var calendarEvent = await _context.Events.FindAsync(eventId);
+                var calendarEvent = await _context.Events.Include(e => e.Attendees)
+                               .FirstOrDefaultAsync(e => e.Id == eventId);
                 if (calendarEvent != null)
                 {
                     _context.Events.Remove(calendarEvent);

@@ -46,7 +46,7 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
             }
             catch (Exception ex) 
             {
-                _logger.LogError($"{DateTime.UtcNow} - {nameof(RemoveAttendeeCommandHandler)} - {nameof(HandleAsync)}: failed to remove attendee {attendeeId}.");
+                _logger.LogError($"{DateTime.UtcNow} - {nameof(RemoveAttendeeCommandHandler)} - {nameof(HandleAsync)}: failed to remove attendee {attendeeId}. {ex.Message}.");
                 throw new Exception($"{DateTime.Now}  - internal server error");
             }
         }

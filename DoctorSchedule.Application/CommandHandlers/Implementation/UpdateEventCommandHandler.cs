@@ -20,7 +20,13 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
             _logger = logger;
             _eventRepository = eventRepository;
         }
-
+        /// <summary>
+        /// This method is responsible to handle updating of an event together with the attendees details.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<bool> HandleAsync(Guid eventId, UpdateEventCommand command) 
         {
             try 
