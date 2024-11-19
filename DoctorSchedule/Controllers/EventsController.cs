@@ -1,5 +1,6 @@
 ﻿using DoctorSchedule.Application.CommandHandlers.Interface;
 using DoctorSchedule.Application.Commands;
+using DoctorSchedule.Application.QueryHandlers.Interface;
 using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
@@ -16,11 +17,13 @@ namespace DoctorSchedule.Controllers
     {
         private readonly IEventRepository _eventRepository;
         private readonly ICreateEventCommandHandler _eventCommandHandler;
+        private readonly IGetEventByIdQueryHandler _getEventByIdQueryHandler;
 
-        public EventsController(IEventRepository eventRepository, ICreateEventCommandHandler eventCommandHandler)
+        public EventsController(IEventRepository eventRepository, ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler)
         {
             _eventRepository = eventRepository;
             _eventCommandHandler = eventCommandHandler;
+            _getEventByIdQueryHandler = getEventByIdQueryHandler;
         }
 
         [HttpPost("create-attendee-event")]
@@ -37,7 +40,7 @@ namespace DoctorSchedule.Controllers
         [HttpGet("get-event-by-id/{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
-            var calendarEvent = await _eventRepository.GetEventResponseByIdAsync(id);
+            var calendarEvent = await _getEventByIdQueryHandler.HandleAsync(id);
             if (calendarEvent == null)
             {
                 return NotFound();

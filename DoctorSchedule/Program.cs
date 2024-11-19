@@ -80,6 +80,7 @@ builder.Services.AddScoped<IGetAttendeeQueryHandler, GetAttendeeQueryHandler>();
 builder.Services.AddScoped<IRemoveAttendeeCommandHandler, RemoveAttendeeCommandHandler>();
 builder.Services.AddScoped<IAcceptEventCommandHandler, AcceptEventCommandHandler>();
 builder.Services.AddScoped<IDeclineEventCommandHandler, DeclineEventCommandHandler>();
+builder.Services.AddScoped<IGetEventByIdQueryHandler, GetEventByIdQueryHandler>();
 
 builder.Services.AddDataProtection();
 
