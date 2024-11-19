@@ -44,7 +44,7 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                 if (calendarEvent == null)
                 {
                     _logger.LogWarning($"{DateTime.UtcNow} - {nameof(AcceptEventCommandHandler)} - {nameof(HandleAsync)}: no found event {eventId}.");
-                    return false;
+                    throw new KeyNotFoundException("Event not found.");
                 }
 
                 var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
@@ -52,7 +52,7 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                 if (attendee == null)
                 {
                     _logger.LogWarning($"{DateTime.UtcNow} - {nameof(AcceptEventCommandHandler)} - {nameof(HandleAsync)}: no found attendee {attendeeId}.");
-                    return false;
+                    throw new KeyNotFoundException("Attendee not found.");
                 }
 
                 if (await _eventRepository.ResponseStatusEventAsync(eventId, attendeeId,ResponseStatus.Accepted,true))
@@ -69,7 +69,6 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                 else 
                 {
                     _logger.LogWarning($"{DateTime.UtcNow} - {nameof(AcceptEventCommandHandler)} - {nameof(HandleAsync)}: failed to accept event {eventId} for attendee {attendeeId}.");
-
                     return false;
                 }
 

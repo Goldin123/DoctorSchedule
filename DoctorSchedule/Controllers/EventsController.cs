@@ -23,6 +23,17 @@ namespace DoctorSchedule.Controllers
             _eventCommandHandler = eventCommandHandler;
         }
 
+        [HttpPost("create-attendee-event")]
+        public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
+        {
+            var calendarEvent = await _eventCommandHandler.HandleAsync(command);
+           
+            if (calendarEvent != null)
+                return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);
+            else
+                return BadRequest();
+        }
+
         [HttpGet("get-event-by-id/{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
@@ -46,12 +57,6 @@ namespace DoctorSchedule.Controllers
             return Ok(events);
         }
 
-        [HttpPost("create-attendee-event")]
-        public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
-            {
-            var calendarEvent = await _eventCommandHandler.Handle(command);
-            await _eventRepository.CreateEventAsync(calendarEvent);
-            return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);
-        }
+
     }
 }

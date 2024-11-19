@@ -39,20 +39,18 @@ namespace DoctorSchedule.Controllers
         public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] CreateAttendeeCommand command)
         {
             var attendee = await _createAttendeeCommandHandler.HandleAsync(eventId, command);
-
-            return CreatedAtAction(nameof(GetAttendee), new { eventId, attendeeId = attendee.Id }, attendee);
+            if (attendee != null)
+                return CreatedAtAction(nameof(GetAttendee), new { eventId, attendeeId = attendee.Id }, attendee);
+            else
+                return BadRequest();
         }
 
         [HttpGet("get-attendee-by-id/{attendeeId}")]
         public async Task<IActionResult> GetAttendee(Guid eventId, Guid attendeeId)
         {
             var attendee = await _getAttendeeQueryHandler.HandleAsync(eventId, attendeeId);
-
             if (attendee == null)
-            {
                 return NotFound("Attendee or Event not found.");
-            }
-
             return Ok(attendee);
         }
 
@@ -63,7 +61,6 @@ namespace DoctorSchedule.Controllers
 
             if (updatedAttendee == null)
                 return NoContent();
-
             return Ok("Successfully updated.");
         }
 

@@ -1,6 +1,8 @@
 ﻿using DoctorSchedule.Application.CommandHandlers.Interface;
 using DoctorSchedule.Application.Commands;
 using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.RepositoriesInterface;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,27 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
 {
     public class CreateEventCommandHandler : ICreateEventCommandHandler
     {
-        public CreateEventCommandHandler() { }
+        private readonly ILogger<CreateEventCommandHandler> _logger;
+        private readonly IEventRepository _eventRepository;
+        public CreateEventCommandHandler(ILogger<CreateEventCommandHandler> logger, IEventRepository eventRepository ) 
+        {
+            _logger = logger;
+            _eventRepository = eventRepository;
+        }
 
-        public async Task<Event> Handle(CreateEventCommand command) 
+        /// <summary>
+        /// This method is responsible handle commands that create an event.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Event> HandleAsync(CreateEventCommand command) 
         {
             try
             {
-                return new Event
+                _logger.LogInformation($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: attempting to add an event {command.Title}.");
+
+                var newEvent = new Event
                 {
                     Id = Guid.NewGuid(),
                     Title = command.Title,
@@ -27,9 +43,20 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                     Attendees = command.Attendees
                 };
 
+                if(await _eventRepository.CreateEventAsync(newEvent)) 
+                {
+                    _logger.LogInformation($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: successfully added an event {command.Title} with ({command.Attendees?.Count()}) attendees.");
+                    return newEvent;
+                }
+                else 
+                {
+                    _logger.LogInformation($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: failed to add an event {command.Title}.");
+                    return null;
+                }
             }
             catch (Exception ex) 
             {
+                _logger.LogError($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: failed to add an event {command.Title}. {ex.Message}.");
                 throw new Exception($"{DateTime.Now}  - internal server error");
             }
         }

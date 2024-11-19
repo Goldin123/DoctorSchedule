@@ -45,7 +45,10 @@ namespace DoctorSchedule.Application.CommandHandlers.Implementation
                 if (await _eventRepository.AddAttendeeAsync(eventId, attendee))
                     _logger.LogInformation($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: successfully added an attendee {command.Name}.");
                 else
+                {
                     _logger.LogWarning($"{DateTime.UtcNow} - {nameof(CreateAttendeeCommandHandler)} - {nameof(HandleAsync)}: failed to add an attendee {command.Name}.");
+                    return null;
+                }
 
                 return attendee;
             }

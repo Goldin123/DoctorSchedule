@@ -93,7 +93,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task CreateEventAsync(Event calendarEvent)
+        public async Task<bool> CreateEventAsync(Event calendarEvent)
         {
             try
             {
@@ -103,6 +103,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                     await _context.Events.AddAsync(calendarEvent);
                     await _context.SaveChangesAsync();
                 }
+                return true;
             }
             catch (Exception ex)
             {
@@ -219,56 +220,6 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                 throw new Exception($"{DateTime.Now}  - internal server error");
             }
         }
-
-        public async Task<bool> AcceptEventAsync(Guid eventId, Guid attendeeId)
-        {
-            try
-            {
-                var calendarEvent = await _context.Events
-                    .Include(e => e.Attendees)
-                    .FirstOrDefaultAsync(e => e.Id == eventId);
-
-                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
-
-                var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
-                if (attendee == null) throw new KeyNotFoundException("Attendee not found.");
-
-                attendee.ResponseStatus = ResponseStatus.Accepted;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
-                throw new Exception($"{DateTime.Now}  - internal server error");
-            }
-        }
-
-        public async Task<bool> DeclineEventAsync(Guid eventId, Guid attendeeId)
-        {
-            try
-            {
-                var calendarEvent = await _context.Events
-                    .Include(e => e.Attendees)
-                    .FirstOrDefaultAsync(e => e.Id == eventId);
-
-                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
-
-                var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
-                if (attendee == null) throw new KeyNotFoundException("Attendee not found.");
-
-                attendee.ResponseStatus = ResponseStatus.Declined;
-                attendee.IsAttending = false;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
-                throw new Exception($"{DateTime.Now}  - internal server error");
-            }
-        }
-
         public async Task<bool> ResponseStatusEventAsync(Guid eventId, Guid attendeeId, ResponseStatus responseStatus, bool isAttending)
         {
             try
