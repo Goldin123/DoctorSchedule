@@ -14,8 +14,8 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task<Event> GetEventByIdAsync(Guid eventId);
         Task<List<Event>> GetEventsAsync(DateTime? startDate, DateTime? endDate);
         Task<bool> CreateEventAsync(Event calendarEvent);
-        Task UpdateEventAsync(Event calendarEvent);
-        Task DeleteEventAsync(Guid eventId);
+        Task<bool> UpdateEventAsync(Event calendarEvent);
+        Task<bool> DeleteEventAsync(Guid eventId);
         Task<bool> AddAttendeeAsync(Guid eventId, Attendee attendee);
         Task<bool> UpdateAttendeeDetailsAsync(Guid eventId, Attendee attendee);
         Task<bool> RemoveAttendeeAsync(Guid eventId, Guid attendeeId);

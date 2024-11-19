@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Zetes API App", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Doctorly API App", Version = "v1" });
 
     // Add JWT Bearer Authentication
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -82,6 +82,7 @@ builder.Services.AddScoped<IAcceptEventCommandHandler, AcceptEventCommandHandler
 builder.Services.AddScoped<IDeclineEventCommandHandler, DeclineEventCommandHandler>();
 builder.Services.AddScoped<IGetEventByIdQueryHandler, GetEventByIdQueryHandler>();
 builder.Services.AddScoped<IGetEventsBetweenDatesQueryHandler, GetEventsBetweenDatesQueryHandler>();
+builder.Services.AddScoped<IUpdateEventCommandHandler, UpdateEventCommandHandler>();
 
 builder.Services.AddDataProtection();
 

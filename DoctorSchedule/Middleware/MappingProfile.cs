@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DoctorSchedule.Application.Commands;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.Responses;
 
@@ -10,6 +11,7 @@ namespace DoctorSchedule.Middleware
         {
             CreateMap<Event, EventResponse>();
             CreateMap<Attendee, AttendeeResponse>();
+
         }
     }
 }

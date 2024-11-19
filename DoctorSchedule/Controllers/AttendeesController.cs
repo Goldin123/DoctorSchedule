@@ -49,9 +49,10 @@ namespace DoctorSchedule.Controllers
         public async Task<IActionResult> GetAttendee(Guid eventId, Guid attendeeId)
         {
             var attendee = await _getAttendeeQueryHandler.HandleAsync(eventId, attendeeId);
-            if (attendee == null)
+            if (attendee != null)
+                return Ok(attendee);
+            else
                 return NotFound("Attendee or Event not found.");
-            return Ok(attendee);
         }
 
         [HttpPut("update-attendee-details/{attendeeId}")]
@@ -59,25 +60,27 @@ namespace DoctorSchedule.Controllers
         {
             var updatedAttendee = await _updateAttendeeCommadHandler.HandleAsync(eventId, attendeeId, commad);
 
-            if (updatedAttendee == null)
-                return NoContent();
-            return Ok("Successfully updated.");
+            if (updatedAttendee != null)
+                return Ok("Attendee successfully updated.");
+            else 
+                return BadRequest();
         }
 
         [HttpDelete("delete-attendee/{attendeeId}")]
         public async Task<IActionResult> RemoveAttendee(Guid eventId, Guid attendeeId)
         {
             if (await _removeAttendeeCommandHandler.HandleAsync(eventId, attendeeId))
-                return Ok("Successfully removed.");
+                return Ok("Attendee successfully removed.");
             return NoContent();
         }
 
         [HttpPost("{attendeeId}/accept")]
         public async Task<IActionResult> AcceptEvent(Guid eventId, Guid attendeeId)
         {
-            if(await _acceptEventCommandHandler.HandleAsync(eventId,attendeeId))
+            if (await _acceptEventCommandHandler.HandleAsync(eventId, attendeeId))
                 return Ok(new { Message = $"Event accepted successfully and notification sent." });
-            return NoContent();
+            else
+                return BadRequest();
         }
 
         [HttpPost("{attendeeId}/decline")]
@@ -85,7 +88,8 @@ namespace DoctorSchedule.Controllers
         {
             if (await _declineEventCommandHandler.HandleAsync(eventId, attendeeId))
                 return Ok(new { Message = $"Event decline successfully and notification sent." });
-            return NoContent();
+            else
+                return BadRequest();
         }
     }
 }

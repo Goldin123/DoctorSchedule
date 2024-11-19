@@ -1,4 +1,5 @@
-﻿using DoctorSchedule.Application.CommandHandlers.Interface;
+﻿using DoctorSchedule.Application.CommandHandlers.Implementation;
+using DoctorSchedule.Application.CommandHandlers.Interface;
 using DoctorSchedule.Application.Commands;
 using DoctorSchedule.Application.Queries;
 using DoctorSchedule.Application.QueryHandlers.Interface;
@@ -16,17 +17,17 @@ namespace DoctorSchedule.Controllers
 
     public class EventsController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
         private readonly ICreateEventCommandHandler _eventCommandHandler;
         private readonly IGetEventByIdQueryHandler _getEventByIdQueryHandler;
         private readonly IGetEventsBetweenDatesQueryHandler _getEventsBetweenDatesQueryHandler;
+        private readonly IUpdateEventCommandHandler _updateEventCommandHandler;
 
-        public EventsController(IEventRepository eventRepository, ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler, IGetEventsBetweenDatesQueryHandler getEventsBetweenDatesQueryHandler)
+        public EventsController(ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler, IGetEventsBetweenDatesQueryHandler getEventsBetweenDatesQueryHandler, IUpdateEventCommandHandler updateEventCommandHandler)
         {
-            _eventRepository = eventRepository;
             _eventCommandHandler = eventCommandHandler;
             _getEventByIdQueryHandler = getEventByIdQueryHandler;
             _getEventsBetweenDatesQueryHandler = getEventsBetweenDatesQueryHandler;
+            _updateEventCommandHandler = updateEventCommandHandler;
         }
 
         [HttpPost("create-attendee-event")]
@@ -40,13 +41,23 @@ namespace DoctorSchedule.Controllers
                 return BadRequest();
         }
 
-        [HttpGet("get-event-by-id/{id}")]
+        [HttpPut("update-event-details/{eventId}")]
+        public async Task<IActionResult> UpdateEvent(Guid eventId, [FromBody] UpdateEventCommand command)
+        {
+            if(await _updateEventCommandHandler.HandleAsync(eventId, command))
+                return Ok("Event successfully updated.");
+            else
+                return BadRequest();
+        }
+
+        [HttpGet("get-event-by-id/{eventId}")]
         public async Task<IActionResult> GetEventById(Guid eventId)
         {
             var calendarEvent = await _getEventByIdQueryHandler.HandleAsync(eventId);
-            if (calendarEvent == null)
-                return NotFound();
-            return Ok(calendarEvent);
+            if (calendarEvent != null)
+                return Ok(calendarEvent);
+            else
+                return NotFound("No event found.");
         }
 
         [HttpGet("get-events-by-dates")]
@@ -56,7 +67,7 @@ namespace DoctorSchedule.Controllers
             if (events != null)
                 return Ok(events);
             else
-                return NotFound();
+                return NotFound("No events found.");
         }
     }
 }

@@ -102,12 +102,32 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task UpdateEventAsync(Event calendarEvent)
+        public async Task<bool> UpdateEventAsync(Event calendarEvent)
         {
             try
             {
-                _context.Events.Update(calendarEvent);
+                var eventToUpdate = await _context.Events.Include(e => e.Attendees)
+                                  .FirstOrDefaultAsync(e => e.Id == calendarEvent.Id);
+
+                if (eventToUpdate == null) throw new KeyNotFoundException("Event not found.");
+
+                eventToUpdate.Title = calendarEvent.Title;
+                eventToUpdate.Description = calendarEvent.Description;
+                eventToUpdate.StartTime = calendarEvent.StartTime;  
+                eventToUpdate.EndTime = calendarEvent.EndTime;   
+
+                foreach (var attendee in calendarEvent.Attendees)
+                {
+                    var attendeeToUpdate = eventToUpdate.Attendees.FirstOrDefault(a => a.EventId == calendarEvent.Id && a.Email==attendee.Email);
+                    if (attendeeToUpdate != null)
+                    {
+                        attendeeToUpdate.IsAttending = attendee.IsAttending;
+                        attendeeToUpdate.Name = attendee.Name;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -116,7 +136,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task DeleteEventAsync(Guid eventId)
+        public async Task<bool> DeleteEventAsync(Guid eventId)
         {
             try
             {
@@ -126,6 +146,8 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                     _context.Events.Remove(calendarEvent);
                     await _context.SaveChangesAsync();
                 }
+                return true;
+
             }
             catch (Exception ex)
             {
