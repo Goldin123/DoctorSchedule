@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace DoctorSchedule.Application.CommandHandlers.Interface
 {
-    public interface IUpdateAttendeeCommadHandler
+    public interface IUpdateAttendeeCommandHandler
     {
-        Task<Attendee> Handle(Guid eventId, Guid attendeeId, CreateAttendeeCommand command);
+        Task<Attendee> HandleAsync(Guid eventId, Guid attendeeId, UpdateAttendeeCommad command);
     }
 }

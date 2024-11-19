@@ -15,6 +15,8 @@ using DoctorSchedule.Application.CommandHandlers.Implementation;
 using DoctorSchedule.Application.CommandHandlers.Interface;
 using DoctorSchedule.Application.Security.Implementation;
 using DoctorSchedule.Application.Security.Interface;
+using DoctorSchedule.Application.QueryHandlers.Implementation;
+using DoctorSchedule.Application.QueryHandlers.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,8 +74,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICreateAttendeeCommandHandler, CreateAttendeeCommandHandler>();
 builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
-builder.Services.AddScoped<IUpdateAttendeeCommadHandler, UpdateAttendeeCommadHandler>();
+builder.Services.AddScoped<IUpdateAttendeeCommandHandler, UpdateAttendeeCommandHandler>();
 builder.Services.AddScoped<IApplicationDataProtector, ApplicationDataProtector>();
+builder.Services.AddScoped<IGetAttendeeQueryHandler, GetAttendeeQueryHandler>();
+builder.Services.AddScoped<IRemoveAttendeeCommandHandler, RemoveAttendeeCommandHandler>();
+builder.Services.AddScoped<IAcceptEventCommandHandler, AcceptEventCommandHandler>();
+builder.Services.AddScoped<IDeclineEventCommandHandler, DeclineEventCommandHandler>();
 
 builder.Services.AddDataProtection();
 

@@ -1,4 +1,5 @@
 ﻿using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.Enums;
 using DoctorSchedule.Domain.Responses;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace DoctorSchedule.Domain.RepositoriesInterface
         Task CreateEventAsync(Event calendarEvent);
         Task UpdateEventAsync(Event calendarEvent);
         Task DeleteEventAsync(Guid eventId);
-        Task AddAttendeeAsync(Guid eventId, Attendee attendee);
-        Task<bool> UpdateAttendeeAsync(Guid eventId, Attendee attendee);
+        Task<bool> AddAttendeeAsync(Guid eventId, Attendee attendee);
+        Task<bool> UpdateAttendeeDetailsAsync(Guid eventId, Attendee attendee);
         Task<bool> RemoveAttendeeAsync(Guid eventId, Guid attendeeId);
         Task<bool> AcceptEventAsync(Guid eventId, Guid attendeeId);
         Task<bool> DeclineEventAsync(Guid eventId, Guid attendeeId);
         Task<EventResponse> GetEventResponseByIdAsync(Guid eventId);
+        Task<bool> ResponseStatusEventAsync(Guid eventId, Guid attendeeId, ResponseStatus responseStatus, bool isAttending);
     }
 }

@@ -143,7 +143,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task AddAttendeeAsync(Guid eventId, Attendee attendee)
+        public async Task<bool> AddAttendeeAsync(Guid eventId, Attendee attendee)
         {
             try
             {
@@ -161,8 +161,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
                     await _context.Attendees.AddAsync(attendee);
                     await _context.SaveChangesAsync();
                 }
-                //else
-                //    await UpdateAttendeeAsync(eventId, attendee);
+                return true;
             }
             catch (Exception ex)
             {
@@ -171,7 +170,7 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
             }
         }
 
-        public async Task<bool> UpdateAttendeeAsync(Guid eventId, Attendee updatedAttendee)
+        public async Task<bool> UpdateAttendeeDetailsAsync(Guid eventId, Attendee updatedAttendee)
         {
             try
             {
@@ -260,6 +259,31 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
 
                 attendee.ResponseStatus = ResponseStatus.Declined;
                 attendee.IsAttending = false;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{DateTime.Now}  - internal server error - {ex.Message}");
+                throw new Exception($"{DateTime.Now}  - internal server error");
+            }
+        }
+
+        public async Task<bool> ResponseStatusEventAsync(Guid eventId, Guid attendeeId, ResponseStatus responseStatus, bool isAttending)
+        {
+            try
+            {
+                var calendarEvent = await _context.Events
+                    .Include(e => e.Attendees)
+                    .FirstOrDefaultAsync(e => e.Id == eventId);
+
+                if (calendarEvent == null) throw new KeyNotFoundException("Event not found.");
+
+                var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
+                if (attendee == null) throw new KeyNotFoundException("Attendee not found.");
+
+                attendee.ResponseStatus = responseStatus;
+                attendee.IsAttending=isAttending;
                 await _context.SaveChangesAsync();
                 return true;
             }

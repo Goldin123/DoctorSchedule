@@ -170,7 +170,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
             };
 
             // Act
-            await _testClass.UpdateAttendeeAsync(eventId, updatedAttendee);
+            await _testClass.UpdateAttendeeDetailsAsync(eventId, updatedAttendee);
 
             // Assert
             Assert.Fail("Create or modify test");
@@ -179,7 +179,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
         [Test]
         public void CannotCallUpdateAttendeeAsyncWithNullUpdatedAttendee()
         {
-            Assert.ThrowsAsync<ArgumentNullException>(() => _testClass.UpdateAttendeeAsync(new Guid("ed270b13-0f63-4f49-839c-0918e3d36f52"), default(Attendee)));
+            Assert.ThrowsAsync<ArgumentNullException>(() => _testClass.UpdateAttendeeDetailsAsync(new Guid("ed270b13-0f63-4f49-839c-0918e3d36f52"), default(Attendee)));
         }
 
         [Test]
