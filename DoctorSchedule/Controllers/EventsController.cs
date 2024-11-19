@@ -1,4 +1,8 @@
-﻿using DoctorSchedule.Application.Commands;
+﻿using DoctorSchedule.Application.CommandHandlers.Implementation;
+using DoctorSchedule.Application.CommandHandlers.Interface;
+using DoctorSchedule.Application.Commands;
+using DoctorSchedule.Application.Queries;
+using DoctorSchedule.Application.QueryHandlers.Interface;
 using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
 using DoctorSchedule.Domain.RepositoriesInterface;
@@ -13,50 +17,68 @@ namespace DoctorSchedule.Controllers
 
     public class EventsController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
+        private readonly ICreateEventCommandHandler _eventCommandHandler;
+        private readonly IGetEventByIdQueryHandler _getEventByIdQueryHandler;
+        private readonly IGetEventsBetweenDatesQueryHandler _getEventsBetweenDatesQueryHandler;
+        private readonly IUpdateEventCommandHandler _updateEventCommandHandler;
+        private readonly IRemoveEventCommandHandler _removeEventCommandHandler;
 
-        public EventsController(IEventRepository eventRepository)
+        public EventsController(ICreateEventCommandHandler eventCommandHandler, IGetEventByIdQueryHandler getEventByIdQueryHandler, IGetEventsBetweenDatesQueryHandler getEventsBetweenDatesQueryHandler, IUpdateEventCommandHandler updateEventCommandHandler, IRemoveEventCommandHandler removeEventCommandHandler)
         {
-            _eventRepository = eventRepository;
+            _eventCommandHandler = eventCommandHandler;
+            _getEventByIdQueryHandler = getEventByIdQueryHandler;
+            _getEventsBetweenDatesQueryHandler = getEventsBetweenDatesQueryHandler;
+            _updateEventCommandHandler = updateEventCommandHandler;
+            _removeEventCommandHandler = removeEventCommandHandler;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetEventById(Guid id)
-        {
-            var calendarEvent = await _eventRepository.GetEventByIdAsync(id);
-            if (calendarEvent == null)
-            {
-                return NotFound();
-            }
-            return Ok(calendarEvent);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetEvents([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
-        {
-            if (!startDate.HasValue || !endDate.HasValue)
-            {
-                return BadRequest("Both startDate and endDate are required.");
-            }
-
-            var events = await _eventRepository.GetEventsAsync(startDate, endDate);
-            return Ok(events);
-        }
-
-        [HttpPost]
+        [HttpPost("create-attendee-event")]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
-            var calendarEvent = new Event
-            {
-                Id = Guid.NewGuid(),
-                Title = command.Title,
-                Description = command.Description,
-                StartTime = command.StartTime,
-                EndTime = command.EndTime,
-                Attendees = command.Attendees
-            };
-            await _eventRepository.CreateEventAsync(calendarEvent);
-            return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);
+            var calendarEvent = await _eventCommandHandler.HandleAsync(command);
+
+            if (calendarEvent != null)
+                return CreatedAtAction(nameof(GetEventById), new { id = calendarEvent.Id }, calendarEvent);
+            else
+                return BadRequest();
+        }
+
+        [HttpPut("update-event-details/{eventId}")]
+        public async Task<IActionResult> UpdateEvent(Guid eventId, [FromBody] UpdateEventCommand command)
+        {
+            if(await _updateEventCommandHandler.HandleAsync(eventId, command))
+                return Ok("Event successfully updated.");
+            else
+                return BadRequest();
+        }
+
+        [HttpDelete("delete-event/{eventId}")]
+        public async Task<IActionResult> RemoveAttendee(Guid eventId)
+        {
+            if (await _removeEventCommandHandler.HandleAsync(eventId))
+                return Ok("Event successfully removed.");
+            else
+                return BadRequest();
+        }
+
+        [HttpGet("get-event-by-id/{eventId}")]
+        public async Task<IActionResult> GetEventById(Guid eventId)
+        {
+            var calendarEvent = await _getEventByIdQueryHandler.HandleAsync(eventId);
+            if (calendarEvent != null)
+                return Ok(calendarEvent);
+            else
+                return NotFound("No event found.");
+        }
+
+        [HttpGet("get-events-by-dates")]
+        public async Task<IActionResult> GetEvents([FromQuery] GetEventsBetweenDatesQuery query)
+        {
+            var events = await _getEventsBetweenDatesQueryHandler.HandleAsync(query);
+            if (events != null)
+                return Ok(events);
+            else
+                return NotFound("No events found.");
         }
     }
 }

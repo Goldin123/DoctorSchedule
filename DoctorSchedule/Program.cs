@@ -10,6 +10,13 @@ using DoctorSchedule.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using DoctorSchedule.Application.CommandHandlers.Implementation;
+using DoctorSchedule.Application.CommandHandlers.Interface;
+using DoctorSchedule.Application.Security.Implementation;
+using DoctorSchedule.Application.Security.Interface;
+using DoctorSchedule.Application.QueryHandlers.Implementation;
+using DoctorSchedule.Application.QueryHandlers.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Zetes API App", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Doctorly API App", Version = "v1" });
 
     // Add JWT Bearer Authentication
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -57,13 +64,30 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("DoctorSchedule.Infrastructure")));
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddScoped<IEventRepository,EventRepository>();
 builder.Services.AddScoped<IMessageQueue, InMemoryMessageQueue>();
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICreateAttendeeCommandHandler, CreateAttendeeCommandHandler>();
+builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
+builder.Services.AddScoped<IUpdateAttendeeCommandHandler, UpdateAttendeeCommandHandler>();
+builder.Services.AddScoped<IApplicationDataProtector, ApplicationDataProtector>();
+builder.Services.AddScoped<IGetAttendeeQueryHandler, GetAttendeeQueryHandler>();
+builder.Services.AddScoped<IRemoveAttendeeCommandHandler, RemoveAttendeeCommandHandler>();
+builder.Services.AddScoped<IAcceptEventCommandHandler, AcceptEventCommandHandler>();
+builder.Services.AddScoped<IDeclineEventCommandHandler, DeclineEventCommandHandler>();
+builder.Services.AddScoped<IGetEventByIdQueryHandler, GetEventByIdQueryHandler>();
+builder.Services.AddScoped<IGetEventsBetweenDatesQueryHandler, GetEventsBetweenDatesQueryHandler>();
+builder.Services.AddScoped<IUpdateEventCommandHandler, UpdateEventCommandHandler>();
+builder.Services.AddScoped<IRemoveEventCommandHandler, RemoveEventCommandHandler>();
 
+builder.Services.AddDataProtection();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

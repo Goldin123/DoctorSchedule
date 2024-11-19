@@ -1,4 +1,5 @@
-﻿using DoctorSchedule.Domain.Enums;
+﻿using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,21 +7,15 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DoctorSchedule.Domain.Entities
+namespace DoctorSchedule.Domain.Responses
 {
-    /// <summary>
-    /// This will represent the patient who is visiting the doctor.
-    /// </summary>
-    public class Attendee
+    public class AttendeeResponse
     {
-        [JsonIgnore]
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsAttending { get; set; }
-        [JsonIgnore]
         public Guid EventId { get; set; }
-        [JsonIgnore]
-        public ResponseStatus ResponseStatus { get; set; } = ResponseStatus.Pending;
+        public ResponseStatus ResponseStatus { get; set; }
     }
 }

@@ -28,6 +28,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{317B1D31-39E
 		CreateTables.sql = CreateTables.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{BF493BC0-F729-43E1-89F7-6982EC6FF2EC}"
+	ProjectSection(SolutionItems) = preProject
+		Doctor_Scheduling_API_Documentation.docx = Doctor_Scheduling_API_Documentation.docx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

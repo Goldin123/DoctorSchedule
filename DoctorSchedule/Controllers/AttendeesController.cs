@@ -1,7 +1,13 @@
-﻿using DoctorSchedule.Authorization;
+﻿using AutoMapper;
+using DoctorSchedule.Application.CommandHandlers.Interface;
+using DoctorSchedule.Application.Commands;
+using DoctorSchedule.Application.Messaging.Interface;
+using DoctorSchedule.Application.QueryHandlers.Interface;
+using DoctorSchedule.Authorization;
 using DoctorSchedule.Domain.Entities;
+using DoctorSchedule.Domain.Models;
 using DoctorSchedule.Domain.RepositoriesInterface;
-using DoctorSchedule.Domain.Requests;
+using DoctorSchedule.Domain.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,80 +19,78 @@ namespace DoctorSchedule.Controllers
 
     public class AttendeesController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
-
-        public AttendeesController(IEventRepository eventRepository)
+        private readonly ICreateAttendeeCommandHandler _createAttendeeCommandHandler;
+        private readonly IUpdateAttendeeCommandHandler _updateAttendeeCommadHandler;
+        private readonly IGetAttendeeQueryHandler _getAttendeeQueryHandler;
+        private readonly IRemoveAttendeeCommandHandler _removeAttendeeCommandHandler;
+        private readonly IAcceptEventCommandHandler _acceptEventCommandHandler;
+        private readonly IDeclineEventCommandHandler _declineEventCommandHandler;
+        public AttendeesController(ICreateAttendeeCommandHandler createAttendeeCommandHandler, IUpdateAttendeeCommandHandler updateAttendeeCommadHandler, IGetAttendeeQueryHandler getAttendeeQueryHandler, IRemoveAttendeeCommandHandler removeAttendeeCommandHandler, IAcceptEventCommandHandler acceptEventCommandHandler, IDeclineEventCommandHandler declineEventCommandHandler)
         {
-            _eventRepository = eventRepository;
+            _createAttendeeCommandHandler = createAttendeeCommandHandler;
+            _updateAttendeeCommadHandler = updateAttendeeCommadHandler;
+            _getAttendeeQueryHandler = getAttendeeQueryHandler;
+            _removeAttendeeCommandHandler = removeAttendeeCommandHandler;
+            _acceptEventCommandHandler = acceptEventCommandHandler;
+            _declineEventCommandHandler = declineEventCommandHandler;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] AddAttendeeRequest request)
+        [HttpPost("add-attendee")]
+        public async Task<IActionResult> AddAttendee(Guid eventId, [FromBody] CreateAttendeeCommand command)
         {
-            var attendee = new Attendee
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name,
-                Email = request.Email,
-                IsAttending = request.IsAttending
-            };
-
-            await _eventRepository.AddAttendeeAsync(eventId, attendee);
-            return CreatedAtAction(nameof(GetAttendee), new { eventId, attendeeId = attendee.Id }, attendee);
+            var attendee = await _createAttendeeCommandHandler.HandleAsync(eventId, command);
+            if (attendee != null)
+                return CreatedAtAction(nameof(GetAttendee), new { eventId, attendeeId = attendee.Id }, attendee);
+            else
+                return BadRequest();
         }
 
-        [HttpGet("{attendeeId}")]
+        [HttpGet("get-attendee-by-id/{attendeeId}")]
         public async Task<IActionResult> GetAttendee(Guid eventId, Guid attendeeId)
         {
-            var calendarEvent = await _eventRepository.GetEventByIdAsync(eventId);
-            if (calendarEvent == null)
-            {
-                return NotFound("Event not found.");
-            }
-
-            var attendee = calendarEvent.Attendees.FirstOrDefault(a => a.Id == attendeeId);
-            if (attendee == null)
-            {
-                return NotFound("Attendee not found.");
-            }
-
-            return Ok(attendee);
+            var attendee = await _getAttendeeQueryHandler.HandleAsync(eventId, attendeeId);
+            if (attendee != null)
+                return Ok(attendee);
+            else
+                return NotFound("Attendee or Event not found.");
         }
 
-        [HttpPut("{attendeeId}")]
-        public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeRequest request)
+        [HttpPut("update-attendee-details/{attendeeId}")]
+        public async Task<IActionResult> UpdateAttendee(Guid eventId, Guid attendeeId, [FromBody] UpdateAttendeeCommad commad)
         {
-            var updatedAttendee = new Attendee
-            {
-                Id = attendeeId,
-                Name = request.Name,
-                Email = request.Email,
-                IsAttending = request.IsAttending
-            };
+            var updatedAttendee = await _updateAttendeeCommadHandler.HandleAsync(eventId, attendeeId, commad);
 
-            await _eventRepository.UpdateAttendeeAsync(eventId, updatedAttendee);
-            return NoContent();
+            if (updatedAttendee != null)
+                return Ok("Attendee successfully updated.");
+            else 
+                return BadRequest();
         }
 
-        [HttpDelete("{attendeeId}")]
+        [HttpDelete("delete-attendee/{attendeeId}")]
         public async Task<IActionResult> RemoveAttendee(Guid eventId, Guid attendeeId)
         {
-            await _eventRepository.RemoveAttendeeAsync(eventId, attendeeId);
-            return NoContent();
+            if (await _removeAttendeeCommandHandler.HandleAsync(eventId, attendeeId))
+                return Ok("Attendee successfully removed.");
+            else
+                return BadRequest();
         }
 
         [HttpPost("{attendeeId}/accept")]
         public async Task<IActionResult> AcceptEvent(Guid eventId, Guid attendeeId)
         {
-            await _eventRepository.AcceptEventAsync(eventId, attendeeId);
-            return Ok(new { Message = "Event accepted successfully." });
+            if (await _acceptEventCommandHandler.HandleAsync(eventId, attendeeId))
+                return Ok(new { Message = $"Event accepted successfully and notification sent." });
+            else
+                return BadRequest();
         }
 
         [HttpPost("{attendeeId}/decline")]
         public async Task<IActionResult> DeclineEvent(Guid eventId, Guid attendeeId)
         {
-            await _eventRepository.DeclineEventAsync(eventId, attendeeId);
-            return Ok(new { Message = "Event declined successfully." });
+            if (await _declineEventCommandHandler.HandleAsync(eventId, attendeeId))
+                return Ok(new { Message = $"Event decline successfully and notification sent." });
+            else
+                return BadRequest();
         }
     }
 }

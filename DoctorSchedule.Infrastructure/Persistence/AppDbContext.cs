@@ -33,10 +33,10 @@ namespace DoctorSchedule.Infrastructure.Persistence
                 entity.HasKey(a => a.Id);
                 entity.Property(a => a.Name).HasMaxLength(50).IsRequired();
                 entity.Property(a => a.Email).HasMaxLength(100).IsRequired();
-                entity.HasOne(a => a.Event)
-                      .WithMany(e => e.Attendees)
-                      .HasForeignKey(a => a.EventId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(a => a.Event)
+                //      .WithMany(e => e.Attendees)
+                //      .HasForeignKey(a => a.EventId)
+                //      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

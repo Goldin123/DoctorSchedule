@@ -9,10 +9,10 @@ namespace DoctorSchedule.Application.Queries
 {
     public class LoginUserQuery
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required.")]
         public string? Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
         public string? Password { get; set; }
     }
 }

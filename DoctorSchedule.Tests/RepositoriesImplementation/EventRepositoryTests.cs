@@ -3,6 +3,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AutoMapper;
     using DoctorSchedule.Domain.Entities;
     using DoctorSchedule.Infrastructure.Persistence;
     using DoctorSchedule.Infrastructure.RepositoriesImplementation;
@@ -17,13 +18,14 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
         private EventRepository _testClass;
         private AppDbContext _context;
         private ILogger<EventRepository> _logger;
+        private IMapper _mapper;
 
         [SetUp]
         public void SetUp()
         {
             _context = new AppDbContext(new DbContextOptions<AppDbContext>());
             _logger = Substitute.For<ILogger<EventRepository>>();
-            _testClass = new EventRepository(_context, _logger);
+            _testClass = new EventRepository(_context, _logger, _mapper);
         }
 
         [Test]
@@ -138,15 +140,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
                 Email = "TestValue1740547232",
                 IsAttending = true,
                 EventId = new Guid("dffda24e-8a68-410a-b1ed-0b13cfe81a43"),
-                Event = new Event
-                {
-                    Id = new Guid("b2232f64-3a5b-4bd6-951d-f67fcea2fb2a"),
-                    Title = "TestValue1374488865",
-                    Description = "TestValue1399434863",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow,
-                    Attendees = new List<Attendee>()
-                }
+               
             };
 
             // Act
@@ -174,19 +168,11 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
                 Email = "TestValue1975387628",
                 IsAttending = false,
                 EventId = new Guid("07c7e859-d54c-45d2-9d51-de71aa69e404"),
-                Event = new Event
-                {
-                    Id = new Guid("25fdb513-ef06-4554-ae3b-ace92a734f8e"),
-                    Title = "TestValue592638129",
-                    Description = "TestValue1052824",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow,
-                    Attendees = new List<Attendee>()
-                }
+               
             };
 
             // Act
-            await _testClass.UpdateAttendeeAsync(eventId, updatedAttendee);
+            await _testClass.UpdateAttendeeDetailsAsync(eventId, updatedAttendee);
 
             // Assert
             Assert.Fail("Create or modify test");
@@ -195,7 +181,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
         [Test]
         public void CannotCallUpdateAttendeeAsyncWithNullUpdatedAttendee()
         {
-            Assert.ThrowsAsync<ArgumentNullException>(() => _testClass.UpdateAttendeeAsync(new Guid("ed270b13-0f63-4f49-839c-0918e3d36f52"), default(Attendee)));
+            Assert.ThrowsAsync<ArgumentNullException>(() => _testClass.UpdateAttendeeDetailsAsync(new Guid("ed270b13-0f63-4f49-839c-0918e3d36f52"), default(Attendee)));
         }
 
         [Test]
@@ -210,34 +196,6 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
 
             // Assert
             Assert.Fail("Create or modify test");
-        }
-
-        [Test]
-        public async Task CanCallAcceptEventAsync()
-        {
-            // Arrange
-            var eventId = new Guid("91764361-0ea9-46bf-9a75-feabdd876b35");
-            var attendeeId = new Guid("440f7663-abac-4450-a2ce-bfe4e55b5ba4");
-
-            // Act
-            await _testClass.AcceptEventAsync(eventId, attendeeId);
-
-            // Assert
-            Assert.Fail("Create or modify test");
-        }
-
-        [Test]
-        public async Task CanCallDeclineEventAsync()
-        {
-            // Arrange
-            var eventId = new Guid("33af41e5-ee97-4d77-9120-0d518bd1e4bb");
-            var attendeeId = new Guid("ce2f7155-619b-4699-85f2-5f2eb69ba4f8");
-
-            // Act
-            await _testClass.DeclineEventAsync(eventId, attendeeId);
-
-            // Assert
-            Assert.Fail("Create or modify test");
-        }
+        }       
     }
 }
