@@ -25,21 +25,27 @@ namespace DoctorSchedule.Application.QueryHandlers.Implementation
             _mapper = mapper;
         }
 
-        public async Task<EventResponse> HandleAsync(Guid id) 
+        /// <summary>
+        /// This method handles all queries related to get an event based on an id. 
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<EventResponse> HandleAsync(Guid eventId) 
         {
             try
             {
-                _logger.LogInformation($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: attempting to get an event {id}.");
-                var calendarEvent = await _eventRepository.GetEventResponseByIdAsync(id);
+                _logger.LogInformation($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: attempting to get an event {eventId}.");
+                var calendarEvent = await _eventRepository.GetEventResponseByIdAsync(eventId);
                
                 if (calendarEvent != null) 
                 {
-                    _logger.LogInformation($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: successfully found an event {id}.");
+                    _logger.LogInformation($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: successfully found an event {eventId}.");
                     return calendarEvent;
                 }
                 else 
                 {
-                    _logger.LogWarning($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: failed to found an event {id}.");
+                    _logger.LogWarning($"{DateTime.UtcNow} - {nameof(GetEventByIdQueryHandler)} - {nameof(HandleAsync)}: failed to found an event {eventId}.");
                     return null;
                 }
 

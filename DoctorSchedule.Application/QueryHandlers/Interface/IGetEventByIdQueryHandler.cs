@@ -9,6 +9,6 @@ namespace DoctorSchedule.Application.QueryHandlers.Interface
 {
     public interface IGetEventByIdQueryHandler
     {
-        Task<EventResponse> HandleAsync(Guid id);
+        Task<EventResponse> HandleAsync(Guid eventId);
     }
 }

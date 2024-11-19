@@ -3,6 +3,7 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AutoMapper;
     using DoctorSchedule.Domain.Entities;
     using DoctorSchedule.Infrastructure.Persistence;
     using DoctorSchedule.Infrastructure.RepositoriesImplementation;
@@ -17,13 +18,14 @@ namespace DoctorSchedule.Tests.RepositoriesImplementation
         private EventRepository _testClass;
         private AppDbContext _context;
         private ILogger<EventRepository> _logger;
+        private IMapper _mapper;
 
         [SetUp]
         public void SetUp()
         {
             _context = new AppDbContext(new DbContextOptions<AppDbContext>());
             _logger = Substitute.For<ILogger<EventRepository>>();
-            _testClass = new EventRepository(_context, _logger);
+            _testClass = new EventRepository(_context, _logger, _mapper);
         }
 
         [Test]

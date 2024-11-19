@@ -20,22 +20,12 @@ namespace DoctorSchedule.Infrastructure.RepositoriesImplementation
         private readonly ILogger<EventRepository> _logger;
         private readonly IMapper _mapper;
 
-        public AppDbContext Context { get; }
-        public ILogger<EventRepository> Logger { get; }
-
         public EventRepository(AppDbContext context, ILogger<EventRepository> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
         }
-
-        public EventRepository(AppDbContext context, ILogger<EventRepository> logger)
-        {
-            Context = context;
-            Logger = logger;
-        }
-
         public async Task<Event> GetEventByIdAsync(Guid eventId)
         {
             try

@@ -25,7 +25,7 @@ namespace DoctorSchedule.Application.Commands
         [DataType(DataType.DateTime)]
         [TimeComparison("StartTime", "EndTime", ErrorMessage = "End time must be later than start time.")]
         public DateTime? EndTime { get; set; }
-        public List<Attendee> Attendees { get; set; }
+        public List<Attendee>? Attendees { get; set; }
     }
 }
 
